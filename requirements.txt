@@ -1,0 +1,8 @@
+# Dependencias del proyecto para el servicio telemático
+#
+# Este archivo lista las bibliotecas de Python necesarias para ejecutar
+# la aplicación. El ambiente Docker instalará estas dependencias mediante
+# ``pip install -r requirements.txt``. Se recomienda usar versiones
+# específicas para reproducibilidad.
+
+Flask==2.3.2

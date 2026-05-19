@@ -1,0 +1,29 @@
+# Archivos y carpetas que no deben subirse al repositorio
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entornos virtuales
+venv/
+.venv/
+
+# Archivos de configuración personales
+.env
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.log
+*.tmp
+*.swp
+
+# Directorios de dependencias (para proyectos más grandes)
+node_modules/
+
+# Configuraciones de IDE/editors
+.vscode/
+.idea/
