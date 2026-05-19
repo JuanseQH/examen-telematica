@@ -87,14 +87,17 @@ Por eso el `Dockerfile` incluye Python:
 ## Requisitos previos
 
 - **Git**
-- **Docker Engine** y **Docker Compose** (plugin `compose` v2)
-- En AWS: instancia **Ubuntu** con puerto **8080** abierto en el Security Group
+- **Docker Engine** con plugin **Compose v2** (comando `docker compose`, no `docker-compose` antiguo)
+- **curl** (para pruebas en terminal; en Ubuntu: `sudo apt install -y curl`)
+- En AWS: instancia **Ubuntu** con puerto **8080** (TCP) abierto en el Security Group
+
+> **Nota sobre permisos:** en Linux recién instalado, Docker suele requerir `sudo` o agregar el usuario al grupo `docker` (ver sección AWS).
 
 ---
 
 ## Despliegue rápido (recomendado)
 
-Desde la raíz del repositorio:
+Desde la raíz del repositorio (Linux, macOS o Windows con Docker Desktop):
 
 ```bash
 git clone https://github.com/JuanseQH/examen-telematica.git
@@ -103,7 +106,10 @@ cd examen-telematica
 # Opción A: docker compose (reinicio automático unless-stopped)
 docker compose up -d --build
 
-# Opción B: script en Linux/AWS
+# Si aparece "permission denied" en el socket de Docker, use:
+# sudo docker compose up -d --build
+
+# Opción B: script en Linux/AWS (detecta sudo automáticamente)
 chmod +x scripts/deploy.sh
 ./scripts/deploy.sh
 ```
@@ -112,8 +118,8 @@ Verificar:
 
 ```bash
 docker compose ps
-curl http://localhost:8080/health
-curl http://localhost:8080/api/info
+curl -fsS http://localhost:8080/health
+curl -fsS http://localhost:8080/api/info
 ```
 
 Abrir en el navegador: `http://localhost:8080` (o `http://IP_PUBLICA:8080` en la nube).
@@ -122,9 +128,18 @@ Abrir en el navegador: `http://localhost:8080` (o `http://IP_PUBLICA:8080` en la
 
 ## Despliegue manual con Docker
 
+Equivalente a `docker compose`, sin usar el archivo YAML. **No mezcle** ambos métodos a la vez con el mismo nombre de contenedor.
+
 ```bash
-docker build -t examen-telematica .
-docker run -d --restart unless-stopped -p 8080:5000 --name examen-telematica examen-telematica
+# Desde la raíz del repositorio (donde está el Dockerfile)
+docker build -t examen-telematica:latest .
+
+docker run -d \
+  --restart unless-stopped \
+  -p 8080:5000 \
+  --name examen-telematica \
+  examen-telematica:latest
+
 docker ps
 docker logs examen-telematica
 ```
@@ -136,33 +151,66 @@ docker stop examen-telematica
 docker rm examen-telematica
 ```
 
+Reconstruir desde cero (tras cambiar código):
+
+```bash
+docker compose down
+docker compose up -d --build
+
+# O, si usó solo docker run:
+docker stop examen-telematica && docker rm examen-telematica
+docker rmi examen-telematica:latest
+docker build -t examen-telematica:latest .
+docker run -d --restart unless-stopped -p 8080:5000 --name examen-telematica examen-telematica:latest
+```
+
 ---
 
 ## Despliegue en Ubuntu / AWS
 
 ```bash
-# 1. Conectar por SSH
-ssh -i tu-clave.pem ubuntu@IP_PUBLICA
+# 1. Conectar por SSH (Ubuntu en EC2)
+ssh -i ruta/a/tu-clave.pem ubuntu@IP_PUBLICA
 
-# 2. Instalar Docker
+# 2. Instalar Git, Docker y Compose
 sudo apt update
-sudo apt install -y git docker.io docker-compose-v2
+sudo apt install -y git curl docker.io docker-compose-plugin
 sudo systemctl enable --now docker
-sudo usermod -aG docker $USER
-# Cerrar sesión y volver a entrar para aplicar el grupo docker
 
-# 3. Clonar y desplegar
+# 3. Permisos Docker (elija UNA opción)
+# Opción A — inmediata: usar sudo en cada comando docker (recomendado la primera vez)
+# Opción B — permanente: agregar usuario al grupo docker y reconectar SSH
+sudo usermod -aG docker "$USER"
+# Cerrar sesión SSH, volver a entrar, luego: docker ps
+
+# 4. Clonar y desplegar
 git clone https://github.com/JuanseQH/examen-telematica.git
 cd examen-telematica
-docker compose up -d --build
+sudo docker compose up -d --build
+# Sin sudo, si ya aplicó la opción B del paso 3:
+# docker compose up -d --build
 
-# 4. Abrir en el Security Group de AWS: puerto TCP 8080 (origen 0.0.0.0/0 o tu IP)
+# 5. Verificar en el servidor
+sudo docker compose ps
+curl -fsS http://localhost:8080/health
 
-# 5. Probar desde su PC
-curl http://IP_PUBLICA:8080/health
+# 6. Security Group de AWS: regla de entrada TCP puerto 8080
+
+# 7. Probar desde su PC (reemplace IP_PUBLICA)
+curl -fsS http://IP_PUBLICA:8080/health
 ```
 
 En el navegador: `http://IP_PUBLICA:8080`
+
+### Solución de problemas frecuentes
+
+| Error | Causa | Solución |
+|-------|--------|----------|
+| `permission denied` en `/var/run/docker.sock` | Usuario sin permisos Docker | `sudo docker compose ...` o agregar al grupo `docker` y reconectar SSH |
+| `docker compose: command not found` | Falta plugin Compose | `sudo apt install -y docker-compose-plugin` |
+| `curl: command not found` | curl no instalado | `sudo apt install -y curl` |
+| No carga en el navegador externo | Puerto cerrado en AWS | Abrir **8080/TCP** en el Security Group de la instancia |
+| Conflicto de nombre de contenedor | Contenedor previo activo | `sudo docker compose down` y volver a ejecutar `up` |
 
 ---
 
@@ -184,21 +232,31 @@ código local → git commit → git push → CI valida build → servidor AWS: 
 
 ## Prueba local sin Docker
 
+Ejecutar siempre **desde la raíz del repositorio** (donde está `app.py`):
+
 ```bash
+cd examen-telematica
+
 python -m venv venv
-# Windows:  .\venv\Scripts\Activate.ps1
-# Linux:    source venv/bin/activate
+# Windows (PowerShell):
+.\venv\Scripts\Activate.ps1
+# Linux / macOS:
+source venv/bin/activate
+
 pip install -r requirements.txt
 python app.py
 ```
 
-Abrir [http://localhost:5000](http://localhost:5000).
+Abrir [http://localhost:5000](http://localhost:5000) (puerto **5000** en local; en Docker se publica como **8080**).
 
-Para simular producción local con Gunicorn:
+Para simular producción local con Gunicorn (mismo servidor que usa el contenedor):
 
 ```bash
-gunicorn --bind 0.0.0.0:5000 --workers 2 app:app
+# Con el entorno virtual activado y desde la raíz del repo
+gunicorn --bind 0.0.0.0:5000 --workers 2 --threads 2 --timeout 60 app:app
 ```
+
+Probar: [http://localhost:5000/health](http://localhost:5000/health)
 
 ---
 
@@ -214,10 +272,13 @@ gunicorn --bind 0.0.0.0:5000 --workers 2 app:app
 | Dependencias Python | `requirements.txt` + reconstruir imagen |
 | Puerto o workers | `Dockerfile`, `docker-compose.yml` |
 
-Tras cambios en producción:
+Tras cambios en producción (en el servidor o local):
 
 ```bash
+git pull
+docker compose down
 docker compose up -d --build
+# En AWS sin grupo docker: sudo docker compose up -d --build
 ```
 
 ---
