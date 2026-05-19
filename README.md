@@ -304,3 +304,32 @@ git push origin main
 Commits sugeridos para evidenciar evolución: estructura inicial → Flask → Docker → Tetris web → Gunicorn/CI → documentación.
 
 ---
+
+## Demostración en AWS (acceso para el profesor)
+
+Además de clonar el repositorio y ejecutar el contenedor localmente, dejé configurada una **instancia de prueba en AWS** donde verifiqué el despliegue completo del servicio.
+
+| Recurso | Valor |
+|---------|--------|
+| URL del servicio | [http://3.89.181.137:8080](http://3.89.181.137:8080) |
+| Health check | [http://3.89.181.137:8080/health](http://3.89.181.137:8080/health) |
+| API info | [http://3.89.181.137:8080/api/info](http://3.89.181.137:8080/api/info) |
+
+**Importante:** la instancia EC2 puede estar **apagada** cuando no se esté evaluando, para evitar costos innecesarios. Si el profesor desea revisar el servicio en esa URL, le pido que me avise con anticipación (correo o Teams); en cuanto lo indique, **encenderé la instancia** y ejecutaré el contenedor con:
+
+```bash
+cd examen-telematica
+sudo docker compose up -d --build
+```
+
+De ese modo el servicio quedará disponible en la IP indicada para su revisión. La entrega formal del examen sigue siendo el repositorio de GitHub; esta URL es un complemento opcional de demostración en la nube.
+
+---
+
+## Enlace de entrega
+
+Entregar al profesor:
+
+**https://github.com/JuanseQH/examen-telematica**
+
+---
