@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Servicio Telemático Dockerizado — Tetris</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tetris/tetris.css') }}">
+  </head>
+  <body>
+    <div class="page-bg"></div>
+    <header class="site-header">
+      <span class="badge">Examen 3 · Telemática</span>
+      <h1>Servicio Telemático Dockerizado</h1>
+      <p class="tagline">
+        Servicio web con <strong>Flask</strong> y <strong>Docker</strong>.
+        Juega Tetris en el navegador. Este juego fue hecho basado en la lógica de una aplicación
+        de tetris que realicé yo mismo hace un tiempo; simplemente lo adapté a
+        <strong>JavaScript + Canvas</strong> para usarlo de esta forma.
+      </p>
+      <p class="author-line">
+        Autor: <strong>Juan Sebastián Quintero Hwernández</strong>
+      </p>
+      <p class="status-line">
+        Estado: <span class="status">Funcionando</span>
+        · Puerto interno <code>5000</code>
+        · Docker: <code>-p 8080:5000</code>
+      </p>
+    </header>
+
+    <main class="main-content">
+      <section class="game-section" aria-label="Tetris">
+        <div class="tetris-layout">
+          <aside class="tetris-side tetris-side-left">
+            <div class="tetris-panel">
+              <h3>Hold</h3>
+              <canvas id="hold-canvas" class="preview-canvas" width="120" height="120" aria-label="Pieza en reserva"></canvas>
+            </div>
+            <div class="tetris-panel">
+              <h3>Tema</h3>
+              <div class="theme-picker">
+                <button type="button" class="theme-btn" data-theme="clasico">Clásico</button>
+                <button type="button" class="theme-btn" data-theme="oscuro">Oscuro</button>
+                <button type="button" class="theme-btn active" data-theme="neon">Neon</button>
+                <button type="button" class="theme-btn" data-theme="retro">Retro</button>
+              </div>
+            </div>
+          </aside>
+
+          <div class="canvas-wrap">
+            <canvas id="tetris-canvas" width="300" height="600" aria-label="Tablero Tetris"></canvas>
+            <div id="tetris-overlay" class="tetris-overlay">
+              <h2 id="overlay-title">TETRIS</h2>
+              <p id="overlay-text">Enter o clic en Jugar</p>
+              <button type="button" id="overlay-btn" class="btn">Jugar</button>
+            </div>
+          </div>
+
+          <aside class="tetris-side tetris-side-right">
+            <div class="tetris-panel">
+              <h3>Siguiente</h3>
+              <canvas id="next-canvas" class="preview-canvas" width="120" height="120" aria-label="Siguiente pieza"></canvas>
+            </div>
+            <div class="tetris-panel">
+              <h3>Modo</h3>
+              <div class="mode-picker">
+                <button type="button" class="mode-btn active" data-mode="0">Clásico</button>
+                <button type="button" class="mode-btn" data-mode="1">Maratón</button>
+                <button type="button" class="mode-btn" data-mode="2">Zen</button>
+              </div>
+              <p class="stat-row"><span>Modo</span><strong id="stat-mode">Clásico</strong></p>
+              <p class="stat-row"><span>Puntos</span><strong id="stat-score">0</strong></p>
+              <p class="stat-row"><span>Líneas</span><strong id="stat-lines">0</strong></p>
+              <p class="stat-row"><span>Nivel</span><strong id="stat-level">1</strong></p>
+              <p class="stat-row"><span>Tiempo</span><strong id="stat-time">00:00</strong></p>
+              <p class="stat-row"><span>Record</span><strong id="stat-high">0</strong></p>
+            </div>
+            <div class="tetris-panel">
+              <h3>Controles</h3>
+              <p class="controls-hint">
+                <kbd>←</kbd><kbd>→</kbd> mover · <kbd>↑</kbd> girar · <kbd>↓</kbd> bajar<br>
+                <kbd>Espacio</kbd> caída dura · <kbd>C</kbd> hold · <kbd>P</kbd> pausa
+              </p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <h2>API del servicio</h2>
+        <ul class="api-list">
+          <li><a href="/"><code>/</code></a> — Página principal con Tetris web</li>
+          <li><a href="/health"><code>/health</code></a> — Estado del servicio (JSON)</li>
+          <li><a href="/api/info"><code>/api/info</code></a> — Metadatos del proyecto (JSON)</li>
+        </ul>
+        <p class="note">
+          El código Pygame original permanece en la carpeta <code>Tetris/</code> como referencia.
+          La versión web replica tablero, piezas, hold, temas y puntuación en el navegador.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Juan Sebastián Quintero Hwernández · Examen 3 de Telemática · Python · Flask · Docker · GitHub</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='tetris/tetris.js') }}"></script>
+  </body>
+</html>

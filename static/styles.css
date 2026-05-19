@@ -1,46 +1,178 @@
-/* Estilos básicos para la página principal del Servicio Telemático Dockerizado */
+/* Página principal — Servicio Telemático Dockerizado + Tetris */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f7f9fc;
-    margin: 0;
-    padding: 0;
-    color: #333;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  color: #e2e8f0;
+  background: #020617;
 }
 
-.container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(56, 189, 248, 0.18), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 50%, rgba(167, 139, 250, 0.12), transparent),
+    radial-gradient(ellipse 50% 30% at 0% 80%, rgba(34, 211, 238, 0.08), transparent),
+    #020617;
 }
 
-h1 {
-    color: #2c3e50;
-    margin-bottom: 10px;
+.site-header {
+  text-align: center;
+  padding: 2rem 1.5rem 1rem;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
-.welcome {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-    color: #34495e;
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #7dd3fc;
+  margin-bottom: 0.75rem;
+}
+
+.site-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tagline {
+  margin: 0 auto 0.75rem;
+  max-width: 640px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+.tagline strong {
+  color: #38bdf8;
+}
+
+.author-line {
+  margin: 0.5rem auto 0;
+  font-size: 0.95rem;
+  color: #cbd5e1;
+}
+
+.author-line strong {
+  color: #a78bfa;
+}
+
+.status-line {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.status-line code {
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(30, 41, 59, 0.8);
+  color: #cbd5e1;
+  font-size: 0.85em;
 }
 
 .status {
-    color: #27ae60;
-    font-weight: bold;
+  color: #4ade80;
+  font-weight: 600;
 }
 
-ul {
-    list-style-type: disc;
-    padding-left: 20px;
+.main-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
 }
 
-footer {
-    margin-top: 40px;
-    font-size: 0.9em;
-    color: #7f8c8d;
-    text-align: center;
+.game-section {
+  margin-bottom: 2.5rem;
+}
+
+.info-section {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+}
+
+.info-section h2 {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  color: #f1f5f9;
+}
+
+.api-list {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  line-height: 1.9;
+}
+
+.api-list a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.api-list a:hover {
+  text-decoration: underline;
+}
+
+.api-list code {
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: rgba(30, 41, 59, 0.9);
+  color: #a5b4fc;
+}
+
+.note {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.85rem;
+  color: #475569;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.btn {
+  padding: 0.65rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
+  color: #0f172a;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
+}
+
+.btn.hidden {
+  display: none;
 }
