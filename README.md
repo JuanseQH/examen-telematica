@@ -24,6 +24,31 @@ La aplicación escucha en `0.0.0.0:5000` dentro del contenedor. En producción s
 
 El juego en el navegador (`static/tetris/`) está basado en la lógica de un Tetris propio, adaptado a **JavaScript + Canvas** para ejecutarse como servicio web consumible.
 
+### ¿Por qué el Dockerfile usa Python si el Tetris es JavaScript?
+
+Es habitual preguntarse por qué la imagen Docker se basa en `python:3.10-slim` cuando el juego ya no usa Pygame. La respuesta es que el proyecto tiene **dos capas distintas**, no una sola tecnología:
+
+| Parte | Tecnología | Dónde se ejecuta |
+|-------|------------|------------------|
+| **Servicio web (requerimiento del examen)** | Python + Flask + Gunicorn | Servidor (contenedor Docker / nube) |
+| **Tetris (contenido interactivo)** | JavaScript + Canvas | **Navegador del usuario** (cliente) |
+
+El examen solicita un **servicio telemático web desplegado en contenedores**. Ese servicio es la aplicación Flask: entrega la página HTML, los archivos estáticos (`tetris.js`, `tetris.css`, estilos) y los endpoints JSON (`/health`, `/api/info`). El Tetris **no se ejecuta dentro del contenedor en Python**; el servidor solo **sirve** esos archivos y el navegador los descarga y ejecuta al abrir `http://IP:8080`.
+
+Por eso el `Dockerfile` incluye Python:
+
+1. **`app.py`** implementa el microservicio web con Flask.
+2. **Gunicorn** actúa como servidor WSGI de producción (más estable que `flask run`).
+3. **No hay Pygame ni lógica de juego en Python** en este repositorio: el motor del Tetris vive en `static/tetris/tetris.js`.
+
+**Analogía:** es el mismo esquema que muchas aplicaciones web: el servidor entrega HTML, CSS y JavaScript; la lógica interactiva corre en el equipo del usuario. El contenedor “corre Python” porque **aloja el servicio web**; el Tetris “corre JavaScript” porque es la experiencia en el cliente.
+
+**Qué se evalúa con este diseño:**
+
+- Contenedor Docker con servicio web funcional → Python + Flask + Gunicorn.
+- Servicio consumible desde el navegador → página con Tetris en JS y APIs JSON.
+- Cumplimiento del enunciado (servicio telemático en red, no aplicación de escritorio aislada).
+
 ---
 
 ## Arquitectura y escalabilidad
