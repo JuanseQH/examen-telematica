@@ -14,8 +14,3 @@ __pycache__/
 Thumbs.db
 .vscode/
 .idea/
-*.md
-!README.md
-
-# Código Pygame de referencia (el servicio web usa static/tetris/)
-Tetris/

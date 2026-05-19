@@ -1,7 +1,6 @@
 /**
  * Tetris web — Examen 3 Telemática
- * Adaptación a JavaScript/Canvas de un Tetris propio (ver carpeta Tetris/ en el repo).
- * Basado en la lógica de board.py, piece.py y constants.py del original Pygame.
+ * Adaptación a JavaScript/Canvas de un Tetris propio (lógica de tablero, piezas y temas).
  */
 (function () {
   'use strict';

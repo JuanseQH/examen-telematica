@@ -22,7 +22,7 @@ La aplicación escucha en `0.0.0.0:5000` dentro del contenedor. En producción s
 
 ### Tetris web
 
-El juego en el navegador (`static/tetris/`) está basado en la lógica de una aplicación Tetris desarrollada previamente en Python/Pygame (carpeta `Tetris/` como referencia). Fue adaptado a **JavaScript + Canvas** para ejecutarse como servicio web consumible.
+El juego en el navegador (`static/tetris/`) está basado en la lógica de un Tetris propio, adaptado a **JavaScript + Canvas** para ejecutarse como servicio web consumible.
 
 ---
 
@@ -44,18 +44,17 @@ El juego en el navegador (`static/tetris/`) está basado en la lógica de una ap
 ├── requirements.txt       # Dependencias Python (Flask, Gunicorn)
 ├── Dockerfile             # Build automatizado de la imagen
 ├── docker-compose.yml     # Despliegue con reinicio automático
-├── .dockerignore          # Excluye venv, .git, Tetris Pygame, etc.
+├── .dockerignore          # Excluye venv, .git, etc.
 ├── .github/workflows/ci.yml  # CI: build Docker en cada push
 ├── scripts/deploy.sh      # Script de despliegue en Linux/AWS
 ├── README.md              # Este manual
 ├── templates/
 │   └── index.html         # Página principal
-├── static/
-│   ├── styles.css
-│   └── tetris/
-│       ├── tetris.js      # Motor del juego (Canvas)
-│       └── tetris.css
-└── Tetris/                # Código Pygame original (solo referencia en repo)
+└── static/
+    ├── styles.css         # Estilos de la página
+    └── tetris/
+        ├── tetris.js      # Motor del juego (Canvas)
+        └── tetris.css     # Estilos del juego
 ```
 
 ---

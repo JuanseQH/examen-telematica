@@ -27,8 +27,3 @@ node_modules/
 # Configuraciones de IDE/editors
 .vscode/
 .idea/
-
-# Datos locales del Tetris Pygame (referencia, no versionar)
-Tetris/user_stats.json
-Tetris/user_config.json
-Tetris/highscore.txt

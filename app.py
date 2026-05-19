@@ -2,7 +2,7 @@
 
 This module defines a web service with:
 
-* ``/`` – Main page with embedded Tetris game (web port of the Pygame project).
+* ``/`` – Main page with embedded Tetris game (JavaScript/Canvas).
 * ``/health`` – JSON health check endpoint.
 * ``/api/info`` – JSON project metadata endpoint.
 
@@ -63,7 +63,7 @@ def create_app() -> Flask:
                 "/health": "Estado del servicio",
                 "/api/info": "Metadatos del proyecto",
             },
-            "source_game": "Tetris/ (Pygame original)",
+            "game": "static/tetris/ (JavaScript + Canvas)",
         })
 
     return app
