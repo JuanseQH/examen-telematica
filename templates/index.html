@@ -45,13 +45,25 @@
                 <button type="button" class="theme-btn" data-theme="retro">Retro</button>
               </div>
             </div>
+            <div class="tetris-panel tetris-panel-controls">
+              <h3>Controles</h3>
+              <p class="controls-hint">
+                <kbd>←</kbd><kbd>→</kbd> mover<br>
+                <kbd>↑</kbd> girar · <kbd>↓</kbd> bajar<br>
+                <kbd>Espacio</kbd> caída dura<br>
+                <kbd>C</kbd> hold · <kbd>P</kbd> pausa
+              </p>
+            </div>
           </aside>
 
           <div class="canvas-wrap">
             <canvas id="tetris-canvas" width="300" height="600" aria-label="Tablero Tetris"></canvas>
             <div id="tetris-overlay" class="tetris-overlay">
               <h2 id="overlay-title">TETRIS</h2>
-              <p id="overlay-text">Enter o clic en Jugar</p>
+              <div class="overlay-message">
+                <p id="overlay-line1" class="overlay-line"></p>
+                <p id="overlay-line2" class="overlay-line overlay-line-sub"></p>
+              </div>
               <button type="button" id="overlay-btn" class="btn">Jugar</button>
             </div>
           </div>
@@ -62,7 +74,7 @@
               <canvas id="next-canvas" class="preview-canvas" width="120" height="120" aria-label="Siguiente pieza"></canvas>
             </div>
             <div class="tetris-panel">
-              <h3>Modo</h3>
+              <h3>Modo y puntuación</h3>
               <div class="mode-picker">
                 <button type="button" class="mode-btn active" data-mode="0">Clásico</button>
                 <button type="button" class="mode-btn" data-mode="1">Maratón</button>
@@ -74,13 +86,6 @@
               <p class="stat-row"><span>Nivel</span><strong id="stat-level">1</strong></p>
               <p class="stat-row"><span>Tiempo</span><strong id="stat-time">00:00</strong></p>
               <p class="stat-row"><span>Record</span><strong id="stat-high">0</strong></p>
-            </div>
-            <div class="tetris-panel">
-              <h3>Controles</h3>
-              <p class="controls-hint">
-                <kbd>←</kbd><kbd>→</kbd> mover · <kbd>↑</kbd> girar · <kbd>↓</kbd> bajar<br>
-                <kbd>Espacio</kbd> caída dura · <kbd>C</kbd> hold · <kbd>P</kbd> pausa
-              </p>
             </div>
           </aside>
         </div>

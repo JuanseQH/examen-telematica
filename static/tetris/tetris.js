@@ -287,8 +287,7 @@
 
         if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
           this.state = 'paused';
-          this.ui.overlayTitle.textContent = 'Pausa';
-          this.ui.overlayText.textContent = 'P o Esc para continuar';
+          this.setOverlayMessage('Pausa', 'P o Esc para continuar');
           this.ui.overlayBtn.classList.add('hidden');
           this.ui.overlay.classList.remove('hidden');
         }
@@ -322,18 +321,29 @@
       });
     }
 
+    setOverlayMessage(line1, line2) {
+      this.ui.overlayLine1.textContent = line1;
+      if (line2) {
+        this.ui.overlayLine2.textContent = line2;
+        this.ui.overlayLine2.style.display = 'block';
+      } else {
+        this.ui.overlayLine2.textContent = '';
+        this.ui.overlayLine2.style.display = 'none';
+      }
+    }
+
     showOverlay(kind) {
       const o = this.ui.overlay;
       o.classList.remove('hidden');
       this.ui.overlayBtn.classList.remove('hidden');
       if (kind === 'menu') {
         this.ui.overlayTitle.textContent = 'TETRIS';
-        this.ui.overlayText.textContent = 'Enter o clic en Jugar · Tab cambia modo';
+        this.setOverlayMessage('Enter o clic en Jugar', 'Tab cambia el modo');
         this.ui.overlayBtn.textContent = 'Jugar';
         this.state = 'menu';
       } else if (kind === 'gameover') {
         this.ui.overlayTitle.textContent = 'Game Over';
-        this.ui.overlayText.textContent = `Puntuación: ${this.score} · Enter para reintentar`;
+        this.setOverlayMessage(`Puntuación: ${this.score}`, 'Enter para reintentar');
         this.ui.overlayBtn.textContent = 'Reintentar';
         this.state = 'gameover';
       }
@@ -652,7 +662,8 @@
     const ui = {
       overlay: document.getElementById('tetris-overlay'),
       overlayTitle: document.getElementById('overlay-title'),
-      overlayText: document.getElementById('overlay-text'),
+      overlayLine1: document.getElementById('overlay-line1'),
+      overlayLine2: document.getElementById('overlay-line2'),
       overlayBtn: document.getElementById('overlay-btn'),
       score: document.getElementById('stat-score'),
       lines: document.getElementById('stat-lines'),
@@ -674,9 +685,11 @@
       if (overlay) {
         overlay.classList.remove('hidden');
         const title = document.getElementById('overlay-title');
-        const text = document.getElementById('overlay-text');
+        const line1 = document.getElementById('overlay-line1');
+        const line2 = document.getElementById('overlay-line2');
         if (title) title.textContent = 'Error al cargar';
-        if (text) text.textContent = String(err.message || err);
+        if (line1) line1.textContent = String(err.message || err);
+        if (line2) line2.style.display = 'none';
       }
     }
   }
