@@ -1,0 +1,21 @@
+# Excluir archivos innecesarios de la imagen Docker
+
+.git
+.github
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.md
+!README.md
+
+# Código Pygame de referencia (el servicio web usa static/tetris/)
+Tetris/

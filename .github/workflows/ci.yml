@@ -1,0 +1,26 @@
+# Integración continua: valida que la imagen Docker se construye en cada push.
+name: CI Docker Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Construir imagen Docker
+        run: docker build -t examen-telematica:ci .
+
+      - name: Verificar que el contenedor arranca y responde /health
+        run: |
+          docker run -d --name examen-ci -p 8080:5000 examen-telematica:ci
+          sleep 8
+          curl -fsS http://localhost:8080/health
+          curl -fsS http://localhost:8080/api/info
+          docker stop examen-ci
