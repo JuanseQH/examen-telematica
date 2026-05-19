@@ -325,11 +325,3 @@ sudo docker compose up -d --build
 De ese modo el servicio quedará disponible en la IP indicada para su revisión. La entrega formal del examen sigue siendo el repositorio de GitHub; esta URL es un complemento opcional de demostración en la nube.
 
 ---
-
-## Enlace de entrega
-
-Entregar al profesor:
-
-**https://github.com/JuanseQH/examen-telematica**
-
----
